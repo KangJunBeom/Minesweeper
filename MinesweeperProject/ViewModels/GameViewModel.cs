@@ -17,7 +17,7 @@ namespace MinesweeperProject.ViewModels
         public int Rows { get; private set; }
         public int Cols { get; private set; }
         public int MineCount { get; private set; }
-
+        private bool _isFirstClick = true;
         public ICommand OpenCellCommand { get; }
         public ICommand ReturnToMenuCommand { get; }
         public bool IsGameWon
@@ -117,29 +117,80 @@ namespace MinesweeperProject.ViewModels
         private void InitializeBoard()
         {
             Cells.Clear();
-            // 1. 모든 셀 생성
             for (int r = 0; r < Rows; r++)
             {
                 for (int c = 0; c < Cols; c++)
                 {
-                    Cells.Add(new Cell(r, c));
+                    Cells.Add(new Cell{ Row = r, Col = c });
                 }
             }
+            _isFirstClick = true; // 플래그 초기화
+            CurrentTime = 0;
+            IsGameWon = false;
+        }
 
-            // 2. 지뢰 랜덤 배치
+        // 2. 지뢰 배치 메서드 (첫 클릭 위치를 인자로 받음)
+        private void PlaceMines(Cell firstCell)
+        {
             Random rand = new Random();
-            var mineLocations = Cells.OrderBy(x => rand.Next()).Take(MineCount).ToList();
-            foreach (var cell in mineLocations)
+
+            // 클릭한 칸과 그 주변 8칸을 안전 영역으로 설정
+            var safeZone = GetNeighbors(firstCell).ToList();
+            safeZone.Add(firstCell);
+
+            // 안전 영역을 제외한 나머지 칸들 중 지뢰를 심을 후보지 선정
+            var candidates = Cells.Except(safeZone).OrderBy(x => rand.Next()).ToList();
+
+            // 지뢰 배치
+            foreach (var cell in candidates.Take(MineCount))
             {
                 cell.IsMine = true;
             }
 
-            // 3. 주변 지뢰 개수 계산
+            // 모든 셀의 주변 지뢰 개수 계산
             foreach (var cell in Cells)
             {
-                if (cell.IsMine) continue;
                 cell.NeighborMineCount = GetNeighbors(cell).Count(n => n.IsMine);
             }
+        }
+
+        // 3. OpenCell 메서드 수정
+        public void OpenCell(Cell? cell)
+        {
+            if (cell == null || cell.IsOpened || cell.IsFlagged) return;
+
+            // [핵심] 첫 클릭이라면 이때 지뢰를 배치함
+            if (_isFirstClick)
+            {
+                PlaceMines(cell);
+                _isFirstClick = false;
+
+                // 타이머 시작
+                if (!_isTimerRunning)
+                {
+                    _timer.Start();
+                    _isTimerRunning = true;
+                }
+            }
+
+            cell.IsOpened = true;
+
+            if (cell.IsMine)
+            {
+                _timer.Stop();
+                GameOver(false);
+                return;
+            }
+
+            if (cell.NeighborMineCount == 0)
+            {
+                foreach (var neighbor in GetNeighbors(cell))
+                {
+                    if (!neighbor.IsOpened) OpenCell(neighbor);
+                }
+            }
+
+            CheckWin();
         }
 
         // 주변 8개의 셀을 가져오는 헬퍼 메서드
@@ -156,46 +207,6 @@ namespace MinesweeperProject.ViewModels
                     }
                 }
             }
-        }
-
-        public void OpenCell(Cell? cell)
-        {
-            // 1. 방어 코드: 클릭할 수 없는 상태라면 즉시 종료
-            if (cell == null || cell.IsOpened || cell.IsFlagged) return;
-
-            // 2. 타이머 시작 (첫 클릭 시 한 번만 실행)
-            if (!_isTimerRunning)
-            {
-                _timer.Start();
-                _isTimerRunning = true;
-            }
-
-            // 3. 셀 상태 변경 (열림)
-            cell.IsOpened = true;
-
-            // 4. 지뢰 체크
-            if (cell.IsMine)
-            {
-                _timer.Stop();
-                GameOver(false); // 게임 오버
-                return;
-            }
-
-            // 5. 빈 칸 확장 (주변에 지뢰가 0개인 경우 주변을 모두 엽니다)
-            if (cell.NeighborMineCount == 0)
-            {
-                // GetNeighbors는 이전에 만든 주변 8칸 가져오는 메서드입니다.
-                foreach (var neighbor in GetNeighbors(cell))
-                {
-                    if (!neighbor.IsOpened)
-                    {
-                        OpenCell(neighbor); // 재귀 호출
-                    }
-                }
-            }
-
-            // 6. 승리 조건 체크
-            CheckWin();
         }
 
         public void FlagCell(Cell? cell)
