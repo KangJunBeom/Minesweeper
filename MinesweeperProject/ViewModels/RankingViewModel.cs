@@ -7,7 +7,6 @@ using System.Windows.Input;
 
 namespace MinesweeperProject.ViewModels
 {
-    // UI에서 보기 좋게 가공된 랭킹 아이템
     public class RankingDisplayItem
     {
         public string Medal { get; set; } = string.Empty;
@@ -15,7 +14,6 @@ namespace MinesweeperProject.ViewModels
         public string TimeDisplay { get; set; } = string.Empty;
     }
 
-    // 난이도별 그룹화를 위한 클래스
     public class RankingGroup
     {
         public string Difficulty { get; set; } = string.Empty;
@@ -54,13 +52,11 @@ namespace MinesweeperProject.ViewModels
                     {
                         if (data.DifficultyRankings.ContainsKey(diff))
                         {
-                            // 해당 난이도의 기록을 시간순으로 정렬 후 상위 3개 추출
                             var top3 = data.DifficultyRankings[diff]
                                 .OrderBy(x => x.Time)
                                 .Take(3)
                                 .Select((entry, index) => new RankingDisplayItem
                                 {
-                                    // 인덱스에 따라 메달 부여
                                     Medal = index == 0 ? "🥇" : index == 1 ? "🥈" : "🥉",
                                     Nickname = entry.Nickname,
                                     TimeDisplay = entry.TimeDisplay

@@ -12,10 +12,9 @@ namespace MinesweeperProject.Models
         public int NeighborMineCount
         {
             get => _neighborMineCount;
-            set => SetProperty(ref _neighborMineCount, value); // 값이 바뀌면 UI에 알림을 보냄
+            set => SetProperty(ref _neighborMineCount, value);
         }
 
-        // Row, Col은 게임 중 변하지 않으므로 일반 속성도 무관합니다.
         public int Row { get; set; }
         public int Col { get; set; }
 

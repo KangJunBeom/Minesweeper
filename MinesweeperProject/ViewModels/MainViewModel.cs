@@ -71,10 +71,9 @@ namespace MinesweeperProject.ViewModels
 
         public void RestoreGame(SaveData data)
         {
-            // 창 크기 모드 변경
+
             WindowSizeToContent = System.Windows.SizeToContent.WidthAndHeight;
 
-            // 저장된 데이터를 인자로 받는 생성자나 메서드 호출
             var gameVM = new GameViewModel(data, this);
             CurrentViewModel = gameVM;
         }
@@ -92,11 +91,9 @@ namespace MinesweeperProject.ViewModels
                 data = new RankingData();
             }
 
-            // 해당 난이도에 새 기록 추가
             var entry = new RankingEntry { Nickname = this.Nickname!, Time = time, Date = DateTime.Now };
             data.DifficultyRankings[difficulty].Add(entry);
 
-            // 시간 순으로 정렬 후 상위 3개만 남기기
             data.DifficultyRankings[difficulty] = data.DifficultyRankings[difficulty]
                 .OrderBy(x => x.Time)
                 .Take(3)
@@ -107,7 +104,6 @@ namespace MinesweeperProject.ViewModels
 
         public void ShowRankingView()
         {
-            // 고정 크기 모드로 변경 (로그인/메뉴와 동일)
             WindowSizeToContent = System.Windows.SizeToContent.Manual;
             WindowWidth = 400;
             WindowHeight = 550;

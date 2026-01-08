@@ -21,7 +21,7 @@ namespace MinesweeperProject
         public MainWindow()
         {
             InitializeComponent();
-            this.DataContext = new MainViewModel(); // 두뇌 연결
+            this.DataContext = new MainViewModel();
         }
     }
 }
