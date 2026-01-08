@@ -1,7 +1,7 @@
 ## 💣 WPF Minesweeper (지뢰찾기)
-C#과 WPF(Windows Presentation Foundation)를 기반으로
+C#과 WPF(Windows Presentation Foundation)를 기반으로<br>
 MVVM 패턴을 준수하여 제작된 윈도우 지뢰찾기 아이디어를 기반으로 한 게임입니다. 
-> LIGNex1 The SSEN 강의 중 C#와 WPF 강의를 토대로 제작했으며,
+> LIGNex1 The SSEN 강의 중 C#와 WPF 강의를 토대로 제작했으며,<br>
 >일부 내용은 Google Gemini의 도움을 받아 생성되었습니다.
 ---
 #### 📺 미리보기 (Screenshots)
