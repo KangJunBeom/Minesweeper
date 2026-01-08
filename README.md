@@ -5,8 +5,8 @@ MVVM 패턴을 준수하여 제작된 윈도우 지뢰찾기 아이디어를 기
 >일부 내용은 Google Gemini의 도움을 받아 생성되었습니다.
 ---
 #### 📺 미리보기 (Screenshots)
-<img src="./Minesweeper/메인화면.png" width="250px" height="300px"></img>
-<img src="./Minesweeper/클리어화면.png" width="250px" height="300px"></img>
+<img src="메인화면.png" width="250px" height="300px"></img>
+<img src="클리어화면.png" width="250px" height="300px"></img>
 ---
 ### ✨ 핵심 기능 (Main Features)
 <br>
