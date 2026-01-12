@@ -1,71 +1,170 @@
 <UserControl x:Class="MinesweeperProject.View.MainMenuView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             Background="#F3F3F3">
-    <Grid>
-        <Button Command="{Binding OpenSettingCommand}"
-            HorizontalAlignment="Right" 
-            VerticalAlignment="Top" 
-            Margin="15"
-            Background="Transparent"
-            BorderThickness="0"
-            Cursor="Hand">
-            <TextBlock Text="⚙️" FontSize="28" Foreground="#444444"/>
+             Background="White">
 
-            <Button.Style>
-                <Style TargetType="Button">
-                    <Style.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="RenderTransform">
-                                <Setter.Value>
-                                    <RotateTransform Angle="30"/>
-                                </Setter.Value>
-                            </Setter>
-                            <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </Button.Style>
-        </Button>
-        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Width="300">
-            <Border Background="White" 
-                    CornerRadius="10" 
-                    Padding="15" 
-                    Margin="0,0,0,30" 
-                    BorderBrush="#DDDDDD" 
-                    BorderThickness="1">
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                    <TextBlock Text="👤 " FontSize="18"/>
-                    <TextBlock Text="{Binding DisplayName}" 
-                               FontSize="18" 
-                               FontWeight="Bold" 
-                               Foreground="#333333"/>
-                </StackPanel>
-            </Border>
-            <TextBlock Text="난이도 선택" Foreground="Gray" Margin="0,0,0,5"/>
-            <UniformGrid Columns="2" Margin="0,0,0,20">
-                <Button Content="쉬움 (10x10)" Command="{Binding StartGameCommand}" CommandParameter="쉬움" Margin="2" Height="40"/>
-                <Button Content="보통 (20x20)" Command="{Binding StartGameCommand}" CommandParameter="보통" Margin="2" Height="40"/>
-                <Button Content="어려움 (30x30)" Command="{Binding StartGameCommand}" CommandParameter="어려움" Margin="2" Height="40"/>
-                <Button Content="극한 (30x60)" Command="{Binding StartGameCommand}" CommandParameter="극한" Margin="2" Height="40" Background="#FFE0E0"/>
-            </UniformGrid>
+    <UserControl.Resources>
+        <Style x:Key="MainMenuButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#002C77"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" 
+                                Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" 
+                                CornerRadius="18" 
+                                SnapsToDevicePixels="True">
+                            <Border.RenderTransform>
+                                <ScaleTransform x:Name="buttonScale" ScaleX="1" ScaleY="1"/>
+                            </Border.RenderTransform>
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
 
-        <Button Content="게임 이어하기" 
-            Command="{Binding LoadGameCommand}" 
-            Height="45" Margin="0,5">
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#EBF2FF"/>
+                                <Setter TargetName="border" Property="BorderBrush" Value="#002C77"/>
+                                <Setter Property="Foreground" Value="#002C77"/>
+                            </Trigger>
+
+                            <Trigger Property="IsPressed" Value="True">
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="border" Storyboard.TargetProperty="(RenderTransform).ScaleX" To="0.98" Duration="0:0:0.05"/>
+                                            <DoubleAnimation Storyboard.TargetName="border" Storyboard.TargetProperty="(RenderTransform).ScaleY" To="0.98" Duration="0:0:0.05"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="border" Storyboard.TargetProperty="(RenderTransform).ScaleX" To="1" Duration="0:0:0.1"/>
+                                            <DoubleAnimation Storyboard.TargetName="border" Storyboard.TargetProperty="(RenderTransform).ScaleY" To="1" Duration="0:0:0.1"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.ExitActions>
+                                <Setter TargetName="border" Property="Background" Value="#D0E0FF"/>
+                            </Trigger>
+
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.4"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="DifficultyButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#002C77"/>
+            <Setter Property="BorderBrush" Value="#002C77"/>
+            <Setter Property="BorderThickness" Value="1.5"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="12">
+                            <Border.RenderTransform>
+                                <ScaleTransform ScaleX="1" ScaleY="1"/>
+                            </Border.RenderTransform>
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#F0F5FF"/>
+                                <Setter TargetName="border" Property="BorderThickness" Value="2"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#D0E0FF"/>
+                                <Setter Property="RenderTransform">
+                                    <Setter.Value>
+                                        <ScaleTransform ScaleX="0.97" ScaleY="0.97"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ExitButtonStyle" TargetType="Button" BasedOn="{StaticResource MainMenuButtonStyle}">
+            <Setter Property="Background" Value="#FFEBEE"/>
+            <Setter Property="Foreground" Value="#D32F2F"/>
+            <Setter Property="BorderBrush" Value="#FFCDD2"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#FFCDD2"/>
+                    <Setter Property="BorderBrush" Value="#D32F2F"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="#EF9A9A"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+
+    <DockPanel LastChildFill="True">
+        <Grid DockPanel.Dock="Top" Margin="30,25,30,0">
+            <StackPanel HorizontalAlignment="Left">
+                <TextBlock Text="LIGNex1" Foreground="#002C77" FontWeight="Bold" FontSize="13" Margin="0,0,0,2"/>
+                <TextBlock Text="메인 메뉴" Foreground="#1A1A1A" FontWeight="ExtraBold" FontSize="34"/>
+            </StackPanel>
+
+            <Button Command="{Binding OpenSettingCommand}" HorizontalAlignment="Right" VerticalAlignment="Top" Background="Transparent" BorderThickness="0" Cursor="Hand">
+                <TextBlock Text="🔧" FontSize="26" Foreground="#444444"/>
                 <Button.Style>
                     <Style TargetType="Button">
                         <Style.Triggers>
-                            <Trigger Property="IsEnabled" Value="False">
-                                <Setter Property="Opacity" Value="0.5"/>
-                                <Setter Property="ToolTip" Value="저장된 게임 파일이 없습니다."/>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="RenderTransform">
+                                    <Setter.Value>
+                                        <RotateTransform Angle="30"/>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
                             </Trigger>
                         </Style.Triggers>
                     </Style>
                 </Button.Style>
             </Button>
-            <Button Content="랭킹 확인" Command="{Binding ShowRankingCommand}" Height="45" Margin="0,5"/>
-            <Button Content="프로그램 종료" Command="{Binding ExitCommand}" Height="45" Margin="0,20" Background="#FFEBEE"/>
-        </StackPanel>
-    </Grid>
+        </Grid>
+
+        <Grid Margin="0,20,0,0">
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Width="320">
+                <Border Background="#F8F9FA" CornerRadius="15" Padding="12" Margin="0,0,0,15" HorizontalAlignment="Left" BorderBrush="#EEEEEE" BorderThickness="1">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="👤" FontSize="14" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                        <TextBlock Text="{Binding DisplayName}" FontSize="14" FontWeight="Bold" Foreground="#333333" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+
+                <TextBlock Text="난이도 선택" Foreground="#888888" FontWeight="Bold" FontSize="16" Margin="5,0,0,8"/>
+                <UniformGrid Columns="2" Margin="0,0,0,25">
+                    <Button Content="쉬움" Command="{Binding StartGameCommand}" CommandParameter="쉬움" Style="{StaticResource DifficultyButtonStyle}" Height="45" Margin="4"/>
+                    <Button Content="보통" Command="{Binding StartGameComponent}" CommandParameter="보통" Style="{StaticResource DifficultyButtonStyle}" Height="45" Margin="4"/>
+                    <Button Content="어려움" Command="{Binding StartGameCommand}" CommandParameter="어려움" Style="{StaticResource DifficultyButtonStyle}" Height="45" Margin="4"/>
+                    <Button Content="극한" Command="{Binding StartGameCommand}" CommandParameter="극한" Style="{StaticResource DifficultyButtonStyle}" Height="45" Margin="4" BorderBrush="#D32F2F" Foreground="#D32F2F"/>
+                </UniformGrid>
+
+                <Button Content="게임 이어하기" Command="{Binding LoadGameCommand}" Style="{StaticResource MainMenuButtonStyle}" Height="55" Margin="0,6"/>
+                <Button Content="랭킹 확인" Command="{Binding ShowRankingCommand}" Style="{StaticResource MainMenuButtonStyle}" Height="55" Margin="0,6"/>
+                <Button Content="프로그램 종료" Command="{Binding ExitCommand}" Style="{StaticResource ExitButtonStyle}" Height="55" Margin="0,15"/>
+            </StackPanel>
+        </Grid>
+    </DockPanel>
 </UserControl>
