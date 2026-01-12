@@ -4,20 +4,68 @@
              Background="White">
 
     <UserControl.Resources>
-        <Storyboard x:Key="FadeInOverlay">
-            <DoubleAnimation Storyboard.TargetProperty="Opacity"
-                             From="0" To="1" Duration="0:0:0.8"/>
-        </Storyboard>
+        <SolidColorBrush x:Key="PrimaryButtonBrush" Color="#007ACC"/>
+        <SolidColorBrush x:Key="PrimaryButtonHoverBrush" Color="#1C97EA"/>
+        <SolidColorBrush x:Key="PrimaryButtonPressedBrush" Color="#005A9E"/>
 
+        <Style x:Key="ModernNavigationButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#333333"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Padding" Value="10,6"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" 
+                        Background="{TemplateBinding Background}" 
+                        BorderThickness="0"
+                        CornerRadius="0">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#555555"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#111111"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <ControlTemplate x:Key="FlatCellTemplate" TargetType="Button">
+            <Border x:Name="CellBorder"
+                    Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}">
+                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Border>
+            <ControlTemplate.Triggers>
+                <MultiTrigger>
+                    <MultiTrigger.Conditions>
+                        <Condition Property="IsMouseOver" Value="True"/>
+                        <Condition Property="IsEnabled" Value="True"/>
+                    </MultiTrigger.Conditions>
+                    <Setter TargetName="CellBorder" Property="Background" Value="#EBEBEB"/>
+                </MultiTrigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+
+        <Storyboard x:Key="FadeInOverlay">
+            <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.8"/>
+        </Storyboard>
         <Storyboard x:Key="ScaleVictoryText">
-            <DoubleAnimation Storyboard.TargetProperty="(RenderTransform).ScaleX"
-                             From="0" To="1" Duration="0:0:1">
+            <DoubleAnimation Storyboard.TargetProperty="(RenderTransform).ScaleX" From="0" To="1" Duration="0:0:1">
                 <DoubleAnimation.EasingFunction>
                     <ElasticEase Oscillations="2" Springiness="5"/>
                 </DoubleAnimation.EasingFunction>
             </DoubleAnimation>
-            <DoubleAnimation Storyboard.TargetProperty="(RenderTransform).ScaleY"
-                             From="0" To="1" Duration="0:0:1">
+            <DoubleAnimation Storyboard.TargetProperty="(RenderTransform).ScaleY" From="0" To="1" Duration="0:0:1">
                 <DoubleAnimation.EasingFunction>
                     <ElasticEase Oscillations="2" Springiness="5"/>
                 </DoubleAnimation.EasingFunction>
@@ -26,22 +74,21 @@
     </UserControl.Resources>
 
     <DockPanel>
-        <Border DockPanel.Dock="Top" Background="#EEEEEE" Height="50" Padding="10">
+        <Border DockPanel.Dock="Top" Background="White" Height="60" Padding="15,0" BorderBrush="#E0E0E0" BorderThickness="0,0,0,1">
             <Grid>
-                <Button Content="나가기" Command="{Binding ReturnToMenuCommand}"
-                        HorizontalAlignment="Left" Width="60"/>
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                    <TextBlock Text="💣 " VerticalAlignment="Center"/>
-                    <TextBlock Text="{Binding MineCount}" FontWeight="Bold" VerticalAlignment="Center" Margin="0,0,30,0"/>
-                    <TextBlock Text="⏱ " VerticalAlignment="Center"/>
-                    <TextBlock Text="{Binding TimeDisplay}" FontWeight="Bold" VerticalAlignment="Center" FontSize="16"/>
+                <Button Content="나가기" Command="{Binding ReturnToMenuCommand}" Style="{StaticResource ModernNavigationButtonStyle}" HorizontalAlignment="Left" MinWidth="60" Cursor="" Click="Button_Click" Width="60" Margin="4,17,0,13" />
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                    <TextBlock Text="💣 " VerticalAlignment="Center" FontSize="18"/>
+                    <TextBlock Text="{Binding MineCount}" FontWeight="Bold" VerticalAlignment="Center" Margin="0,0,25,0" FontSize="18"/>
+                    <TextBlock Text="⏱ " VerticalAlignment="Center" FontSize="18"/>
+                    <TextBlock Text="{Binding TimeDisplay}" FontWeight="Bold" VerticalAlignment="Center" FontSize="18"/>
                 </StackPanel>
             </Grid>
         </Border>
 
         <Grid>
-            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-                <ItemsControl ItemsSource="{Binding Cells}" UseLayoutRounding="True">
+            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Background="#F5F5F5" Padding="20">
+                <ItemsControl ItemsSource="{Binding Cells}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <UniformGrid Rows="{Binding Rows}" Columns="{Binding Cols}"/>
@@ -49,51 +96,53 @@
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Button Width="30" Height="30" Margin="0" Padding="0"
-                                    BorderThickness="1" BorderBrush="#AAAAAA"
+                            <Button Width="32" Height="32" Margin="0.5"
+                                    BorderThickness="1" BorderBrush="#BDBDBD"
+                                    Template="{StaticResource FlatCellTemplate}"
                                     Command="{Binding DataContext.OpenCellCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
                                     CommandParameter="{Binding}">
                                 <Button.InputBindings>
-                                    <MouseBinding MouseAction="RightClick"
-                                                  Command="{Binding DataContext.FlagCellCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
-                                                  CommandParameter="{Binding}"/>
+                                    <MouseBinding MouseAction="RightClick" Command="{Binding DataContext.FlagCellCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}" CommandParameter="{Binding}"/>
                                 </Button.InputBindings>
 
                                 <Button.Style>
                                     <Style TargetType="Button">
-                                        <Setter Property="Background" Value="LightGray"/>
-                                        <Setter Property="FontSize" Value="16"/>
-                                        <Setter Property="FontWeight" Value="Bold"/>
+                                        <Setter Property="Background" Value="#E0E0E0"/>
+                                        <Setter Property="FontSize" Value="17"/>
+                                        <Setter Property="FontWeight" Value="ExtraBold"/>
+                                        <Setter Property="Cursor" Value="Hand"/>
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding IsOpened}" Value="True">
                                                 <Setter Property="Background" Value="White"/>
+                                                <Setter Property="BorderThickness" Value="0.5"/>
+                                                <Setter Property="BorderBrush" Value="#EEEEEE"/>
                                                 <Setter Property="IsEnabled" Value="False"/>
                                                 <Setter Property="Content" Value="{Binding NeighborMineCount}"/>
                                             </DataTrigger>
 
                                             <DataTrigger Binding="{Binding NeighborMineCount}" Value="1">
-                                                <Setter Property="Foreground" Value="Blue"/>
+                                                <Setter Property="Foreground" Value="#1976D2"/>
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding NeighborMineCount}" Value="2">
-                                                <Setter Property="Foreground" Value="Green"/>
+                                                <Setter Property="Foreground" Value="#388E3C"/>
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding NeighborMineCount}" Value="3">
-                                                <Setter Property="Foreground" Value="Red"/>
+                                                <Setter Property="Foreground" Value="#D32F2F"/>
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding NeighborMineCount}" Value="4">
-                                                <Setter Property="Foreground" Value="DarkBlue"/>
+                                                <Setter Property="Foreground" Value="#00008B"/>
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding NeighborMineCount}" Value="5">
-                                                <Setter Property="Foreground" Value="Maroon"/>
+                                                <Setter Property="Foreground" Value="#800000"/>
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding NeighborMineCount}" Value="6">
-                                                <Setter Property="Foreground" Value="Teal"/>
+                                                <Setter Property="Foreground" Value="#008080"/>
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding NeighborMineCount}" Value="7">
-                                                <Setter Property="Foreground" Value="Black"/>
+                                                <Setter Property="Foreground" Value="#000000"/>
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding NeighborMineCount}" Value="8">
-                                                <Setter Property="Foreground" Value="Gray"/>
+                                                <Setter Property="Foreground" Value="#808080"/>
                                             </DataTrigger>
                                             <MultiDataTrigger>
                                                 <MultiDataTrigger.Conditions>
@@ -103,21 +152,31 @@
                                                 </MultiDataTrigger.Conditions>
                                                 <Setter Property="Content" Value=""/>
                                             </MultiDataTrigger>
+
                                             <MultiDataTrigger>
                                                 <MultiDataTrigger.Conditions>
                                                     <Condition Binding="{Binding IsOpened}" Value="False"/>
                                                     <Condition Binding="{Binding IsFlagged}" Value="True"/>
                                                 </MultiDataTrigger.Conditions>
                                                 <Setter Property="Content" Value="🚩"/>
-                                                <Setter Property="Foreground" Value="Red"/>
+                                                <Setter Property="Foreground" Value="#D32F2F"/>
                                             </MultiDataTrigger>
+
                                             <MultiDataTrigger>
                                                 <MultiDataTrigger.Conditions>
                                                     <Condition Binding="{Binding IsOpened}" Value="True"/>
                                                     <Condition Binding="{Binding IsMine}" Value="True"/>
                                                 </MultiDataTrigger.Conditions>
                                                 <Setter Property="Content" Value="💣"/>
-                                                <Setter Property="Background" Value="Black"/>
+                                                <Setter Property="Background" Value="#FFCDD2"/>
+                                            </MultiDataTrigger>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding IsMine}" Value="True"/>
+                                                    <Condition Binding="{Binding DataContext.IsGameWon, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Value="True"/>
+                                                </MultiDataTrigger.Conditions>
+                                                <Setter Property="Background" Value="Gold"/>
+                                                <Setter Property="Content" Value="💣"/>
                                             </MultiDataTrigger>
                                         </Style.Triggers>
                                     </Style>
@@ -140,31 +199,26 @@
                         </Style.Triggers>
                     </Style>
                 </Grid.Style>
-
                 <Rectangle Fill="Black" Opacity="0.5"/>
-
-                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                    <TextBlock x:Name="VictoryText" Text="VICTORY!" FontSize="72" FontWeight="ExtraBold" Foreground="Gold">
-                        <TextBlock.RenderTransform>
-                            <ScaleTransform CenterX="150" CenterY="50" ScaleX="0" ScaleY="0"/>
-                        </TextBlock.RenderTransform>
-                        <TextBlock.Effect>
-                            <DropShadowEffect Color="Orange" BlurRadius="20" ShadowDepth="0"/>
-                        </TextBlock.Effect>
-
-                        <TextBlock.Style>
-                            <Style TargetType="TextBlock">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsGameWon}" Value="True">
-                                        <DataTrigger.EnterActions>
-                                            <BeginStoryboard Storyboard="{StaticResource ScaleVictoryText}"/>
-                                        </DataTrigger.EnterActions>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
-                </StackPanel>
+                <TextBlock Text="VICTORY!" FontSize="72" FontWeight="ExtraBold" Foreground="Gold" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock.RenderTransform>
+                        <ScaleTransform CenterX="150" CenterY="50" ScaleX="0" ScaleY="0"/>
+                    </TextBlock.RenderTransform>
+                    <TextBlock.Effect>
+                        <DropShadowEffect Color="Orange" BlurRadius="20" ShadowDepth="0"/>
+                    </TextBlock.Effect>
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsGameWon}" Value="True">
+                                    <DataTrigger.EnterActions>
+                                        <BeginStoryboard Storyboard="{StaticResource ScaleVictoryText}"/>
+                                    </DataTrigger.EnterActions>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
             </Grid>
         </Grid>
     </DockPanel>
