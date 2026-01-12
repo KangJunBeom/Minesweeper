@@ -1,87 +1,83 @@
 ﻿using MinesweeperProject.Models;
 using MinesweeperProject.Services;
-using System;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
 using System.Text.Json;
-using System.Windows;
 using System.Windows.Input;
 
 namespace MinesweeperProject.ViewModels
 {
+    public class RankingDisplayItem
+    {
+        public string Medal { get; set; } = string.Empty;
+        public string Nickname { get; set; } = string.Empty;
+        public string TimeDisplay { get; set; } = string.Empty;
+    }
+
+    public class RankingGroup
+    {
+        public string Difficulty { get; set; } = string.Empty;
+        public List<RankingDisplayItem> Rankings { get; set; } = new();
+    }
+
     public class RankingViewModel : ViewModelBase
     {
         private readonly MainViewModel _mainParent;
-        private ObservableCollection<RankingEntry> _rankings;
-
-        public ObservableCollection<RankingEntry> Rankings
-        {
-            get => _rankings;
-            set => SetProperty(ref _rankings, value);
-        }
-
-        public ICommand ReturnToMenuCommand { get; }
-        public ICommand ResetRankingsCommand { get; }
+        public ObservableCollection<RankingGroup> GroupedRankings { get; } = new();
+        public ICommand CloseCommand { get; }
 
         public RankingViewModel(MainViewModel mainParent)
         {
             _mainParent = mainParent;
-            Rankings = new ObservableCollection<RankingEntry>();
+            CloseCommand = new RelayCommand(o => _mainParent.ShowMainMenuView(_mainParent.Nickname!));
 
-            ReturnToMenuCommand = new RelayCommand(o => ReturnToMenu());
-            ResetRankingsCommand = new RelayCommand(o => ResetRankings());
-
-            LoadRankings();
+            LoadAndProcessRankings();
         }
 
-        private void LoadRankings() // 랭킹 불러오기
+        private void LoadAndProcessRankings()
         {
-            string filePath = "rankings.json";
-            if (!File.Exists(filePath)) return;
+            string fileName = "rankings.json";
+            if (!File.Exists(fileName)) return;
 
             try
             {
-                string jsonString = File.ReadAllText(filePath);
-                var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-                var data = JsonSerializer.Deserialize<RankingData>(jsonString, options);
+                string json = File.ReadAllText(fileName);
+                var data = JsonSerializer.Deserialize<RankingData>(json);
 
-                if (data != null && data.DifficultyRankings != null)
+                if (data != null)
                 {
-                    var allEntries = data.DifficultyRankings.Values
-                                        .SelectMany(list => list)
-                                        .OrderBy(r => r.Time)
-                                        .ToList();
+                    string[] difficulties = { "쉬움", "보통", "어려움", "극한" };
 
-                    for (int i = 0; i < allEntries.Count; i++)
+                    foreach (var diff in difficulties)
                     {
-                        allEntries[i].Rank = i + 1;
-                    }
+                        if (data.DifficultyRankings.ContainsKey(diff))
+                        {
+                            var top3 = data.DifficultyRankings[diff]
+                                .OrderBy(x => x.Time)
+                                .Take(3)
+                                .Select((entry, index) => new RankingDisplayItem
+                                {
+                                    Medal = index == 0 ? "🥇" : index == 1 ? "🥈" : "🥉",
+                                    Nickname = entry.Nickname,
+                                    TimeDisplay = entry.TimeDisplay
+                                }).ToList();
 
-                    Rankings = new ObservableCollection<RankingEntry>(allEntries);
+                            if (top3.Count > 0)
+                            {
+                                GroupedRankings.Add(new RankingGroup
+                                {
+                                    Difficulty = diff,
+                                    Rankings = top3
+                                });
+                            }
+                        }
+                    }
                 }
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"랭킹 로드 오류: {ex.Message}");
+                System.Windows.MessageBox.Show("랭킹을 불러오는 중 오류 발생: " + ex.Message);
             }
-        }
-
-        private void ResetRankings() // 랭킹 초기화 하기
-        {
-            var result = MessageBox.Show("모든 랭킹 기록을 초기화하시겠습니까?", "확인",
-                                         MessageBoxButton.YesNo, MessageBoxImage.Warning);
-
-            if (result == MessageBoxResult.Yes)
-            {
-                if (File.Exists("rankings.json")) File.Delete("rankings.json");
-                Rankings.Clear();
-            }
-        }
-
-        private void ReturnToMenu() //메인 메뉴로 돌아가기
-        {
-            _mainParent.ShowMainMenuView(_mainParent.Nickname ?? "Guest");
         }
     }
 }
