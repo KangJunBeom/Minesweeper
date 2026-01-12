@@ -10,6 +10,7 @@ namespace MinesweeperProject.ViewModels
         private readonly MainViewModel _mainParent;
         public ICommand StartGameCommand { get; }
         public ICommand LoadGameCommand { get; }
+        public ICommand OpenSettingCommand { get; }
         public ICommand ExitCommand { get; }
 
         public ICommand ShowRankingCommand { get; }
@@ -63,6 +64,8 @@ namespace MinesweeperProject.ViewModels
             });
 
             ShowRankingCommand = new RelayCommand(o => _mainParent.ShowRankingView());
+
+            OpenSettingCommand = new RelayCommand(o => _mainParent.ShowSettingView());
         }
     }
 }
