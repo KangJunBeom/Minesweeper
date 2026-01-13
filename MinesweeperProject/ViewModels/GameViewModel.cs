@@ -237,7 +237,7 @@ namespace MinesweeperProject.ViewModels
 
         private void CheckWin() // 승리 조건 확인 함수
         {
-
+            if (IsGameWon) return;
             bool won = Cells.Where(c => !c.IsMine).All(c => c.IsOpened);
             if (won)
             {
