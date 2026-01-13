@@ -51,7 +51,7 @@ namespace MinesweeperProject.ViewModels
         {
             WindowSizeToContent = SizeToContent.Manual;
             WindowWidth = 400;
-            WindowHeight = 500;
+            WindowHeight = 400;
             CurrentViewModel = new LoginViewModel(this);
         }
 
@@ -60,7 +60,7 @@ namespace MinesweeperProject.ViewModels
             this.Nickname = nickname;
             WindowSizeToContent = SizeToContent.Manual;
             WindowWidth = 500;
-            WindowHeight = 800;
+            WindowHeight = 700;
             CurrentViewModel = new MainMenuViewModel(this);
         }
 
@@ -132,16 +132,16 @@ namespace MinesweeperProject.ViewModels
         public void ShowRankingView() // 랭킹 화면 불러오기
         {
             WindowSizeToContent = System.Windows.SizeToContent.Manual;
-            WindowWidth = 400;
-            WindowHeight = 550;
+            WindowWidth = 500;
+            WindowHeight = 700;
             CurrentViewModel = new RankingViewModel(this);
         }
 
         public void ShowSettingView()
         {
             WindowSizeToContent = SizeToContent.Manual;
-            WindowWidth = 400;
-            WindowHeight = 450;
+            WindowWidth = 500;
+            WindowHeight = 700;
             CurrentViewModel = new SettingViewModel(this);
         }
 
@@ -149,7 +149,7 @@ namespace MinesweeperProject.ViewModels
         {
             WindowSizeToContent = SizeToContent.Manual; // 고정 크기 모드
             WindowWidth = 500;
-            WindowHeight = 600;
+            WindowHeight = 700;
             CurrentViewModel = new MultiSettingViewModel(this);
         }
 

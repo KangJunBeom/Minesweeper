@@ -82,13 +82,13 @@
     </UserControl.Resources>
 
     <DockPanel LastChildFill="True">
-        <StackPanel DockPanel.Dock="Top" Margin="30,25,0,20">
+        <StackPanel DockPanel.Dock="Top" Margin="30,25,30,0">
             <TextBlock Text="LIGNex1" Foreground="#002C77" FontWeight="Bold" FontSize="13" Margin="0,0,0,2"/>
-            <TextBlock Text="멀티플레이 설정" Foreground="#1A1A1A" FontWeight="ExtraBold" FontSize="34"/>
+            <TextBlock Text="멀티플레이" Foreground="#1A1A1A" FontWeight="ExtraBold" FontSize="34"/>
         </StackPanel>
 
         <Grid>
-            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Width="320">
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Width="320" Cursor="">
 
                 <Border Background="#F8F9FA" CornerRadius="15" Padding="12" Margin="0,0,0,30" HorizontalAlignment="Left" BorderBrush="#EEEEEE" BorderThickness="1">
                     <StackPanel Orientation="Horizontal">
@@ -105,9 +105,12 @@
                              FontSize="16"/>
                 </StackPanel>
 
-                <Button Content="방 만들기" Command="{Binding MakeRoomCommand}" Style="{StaticResource LIGButtonStyle}" Height="50" Margin="0,5" />
-                <Button Content="방 참가하기" Command="{Binding IncomeRoomCommand}" Style="{StaticResource LIGButtonStyle}" Height="50" Margin="0,5"/>
-                <Button Content="돌아가기" Command="{Binding CloseCommand}" Style="{StaticResource LIGExitButtonStyle}" Height="50" Margin="0,20"/>
+                <Button Content="방 만들기" Command="{Binding MakeRoomCommand}"
+                        Style="{StaticResource LIGButtonStyle}" Height="55" Margin="0,5"/>
+                <Button Content="방 참가하기" Command="{Binding IncomeRoomCommand}"
+                        Style="{StaticResource LIGButtonStyle}" Height="55" Margin="0,5"/>
+                <Button Content="돌아가기" Command="{Binding CloseCommand}"
+                        Style="{StaticResource LIGExitButtonStyle}" Height="55" Margin="0,10"/>
             </StackPanel>
         </Grid>
     </DockPanel>

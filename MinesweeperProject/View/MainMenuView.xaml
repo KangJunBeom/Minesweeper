@@ -144,7 +144,7 @@
             </Button>
         </Grid>
 
-        <Grid Margin="0,20,0,0">
+        <Grid Margin="30,20,30,30">
             <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Width="320">
                 <Border Background="#F8F9FA" CornerRadius="15" Padding="12" Margin="0,0,0,15" HorizontalAlignment="Left" BorderBrush="#EEEEEE" BorderThickness="1">
                     <StackPanel Orientation="Horizontal">

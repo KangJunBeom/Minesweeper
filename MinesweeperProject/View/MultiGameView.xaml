@@ -8,6 +8,37 @@
              Background="White">
 
     <UserControl.Resources>
+
+        <Style x:Key="ModernNavigationButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#333333"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Padding" Value="10,6"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" 
+                Background="{TemplateBinding Background}" 
+                BorderThickness="0"
+                CornerRadius="0">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#555555"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#111111"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
         <Storyboard x:Key="FadeInVictoryOverlay" x:Shared="False">
             <DoubleAnimation Storyboard.TargetProperty="Opacity"
                              From="0" To="1" Duration="0:0:0.8"/>
@@ -127,6 +158,7 @@
             <Grid>
                 <Button Content="나가기"
                         Command="{Binding ReturnToMenuCommand}"
+                        Style="{StaticResource ModernNavigationButtonStyle}"
                         HorizontalAlignment="Left" Width="60"/>
 
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">

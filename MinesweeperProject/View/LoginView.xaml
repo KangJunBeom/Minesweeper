@@ -79,20 +79,21 @@
                 <TextBlock Text="사용자 닉네임을 입력하세요" 
                            FontSize="14" 
                            Foreground="#666" 
-                           Margin="0,0,0,15" 
-                           HorizontalAlignment="Center"/>
+                           Margin="30,20,30,15" 
+                           HorizontalAlignment="Center" Cursor=""/>
 
                 <TextBox Text="{Binding Nickname, UpdateSourceTrigger=PropertyChanged}" 
                          Style="{StaticResource RoundedTextBoxStyle}"
                          Width="280" 
                          Height="45" 
-                         Margin="0,0,0,12"/>
+                         Margin="30,0,30,12"/>
 
                 <Button Content="게임 시작" 
                         Command="{Binding LoginCommand}" 
                         Style="{StaticResource RoundedButtonStyle}"
                         Width="280" 
-                        Height="45"/>
+                        Height="45"
+                        Margin="30,0,30,20"/>
             </StackPanel>
         </Grid>
     </DockPanel>

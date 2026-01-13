@@ -2,7 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using MinesweeperProject.Models;
-using MinesweeperProject.Services; // RelayCommand 위치 확인
+using MinesweeperProject.Services;
 
 namespace MinesweeperProject.ViewModels
 {
