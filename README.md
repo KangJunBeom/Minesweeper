@@ -8,7 +8,7 @@ MVVM 패턴을 준수하여 제작된 윈도우 지뢰찾기 아이디어를 기
 * KangJunBeom : 프로젝트 총괄, MVVM 아키텍처 설계 및 게임 로직 구현, UI 디자인 담당
 * ckstjrl : 음향 환경설정 및 음향 기능 구현 담당
 * cheoljun99  : 멀티플레이 기능 구현 담당
-* mindidii : 채팅 기능 구현 담당
+* mindidii : 멀티플레이 기능 구현 담당
 
 |![준범](https://avatars.githubusercontent.com/u/80073573?v=4)|![찬석](https://avatars.githubusercontent.com/u/221036337?v=4)|![철준](https://avatars.githubusercontent.com/u/56952340?v=4)|![민지](https://avatars.githubusercontent.com/u/144782994?v=4)
 |:---:|:---:|:---:|:---:|
