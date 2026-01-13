@@ -1,0 +1,42 @@
+﻿<UserControl x:Class="MinesweeperProject.View.MultiSettingView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:MinesweeperProject.View"
+             Background="#F3F3F3">
+    <Grid>
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Width="300">
+            <Border Background="White" 
+            CornerRadius="10" 
+            Padding="15" 
+            Margin="0,0,0,30" 
+            BorderBrush="#DDDDDD" 
+            BorderThickness="1">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <TextBlock Text="👤 " FontSize="18"/>
+                    <TextBlock Text="{Binding DisplayName}" 
+                       FontSize="18" 
+                       FontWeight="Bold" 
+                       Foreground="#333333"/>
+                </StackPanel>
+            </Border>
+            <StackPanel Margin="0,0,0,15">
+                <TextBlock Text="서버 IP"
+                   FontSize="13"
+                   Foreground="#666666"
+                   Margin="5,0,0,3"/>
+
+                <TextBox Height="38"
+                 Text="{Binding ServerIp}"
+                 Padding="10,5"
+                 FontSize="14"
+                 BorderBrush="#CCCCCC"
+                 BorderThickness="1"/>
+            </StackPanel>
+            <Button Content="방 만들기"  Command="{Binding MakeRoomCommand}" Height="45" Margin="0,5" />
+            <Button Content="방 참가하기" Command="{Binding IncomeRoomCommand}" Height="45" Margin="0,5"/>
+            <Button Content="돌아가기" Command="{Binding CloseCommand}" Height="45" Margin="0,20" Background="#FFEBEE"/>
+        </StackPanel>
+    </Grid>
+</UserControl>

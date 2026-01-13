@@ -25,7 +25,19 @@
             <DataTemplate DataType="{x:Type vm:SettingViewModel}">
                 <view:SettingView />
             </DataTemplate>
-            
+
+            <DataTemplate DataType="{x:Type vm:MultiSettingViewModel}">
+                <view:MultiSettingView />
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type vm:WaitRoomViewModel}">
+                <view:WaitRoomView />
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type vm:MultiGameViewModel}">
+                <view:MultiGameView />
+            </DataTemplate>
+
         </ResourceDictionary>
     </Application.Resources>
 </Application>

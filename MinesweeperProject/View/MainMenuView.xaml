@@ -163,6 +163,7 @@
 
                 <Button Content="게임 이어하기" Command="{Binding LoadGameCommand}" Style="{StaticResource MainMenuButtonStyle}" Height="55" Margin="0,6"/>
                 <Button Content="랭킹 확인" Command="{Binding ShowRankingCommand}" Style="{StaticResource MainMenuButtonStyle}" Height="55" Margin="0,6"/>
+                <Button Content="멀티 플레이" Command="{Binding MultiSettingCommand}" Style="{StaticResource MainMenuButtonStyle}" Height="55" Margin="0,5"/>
                 <Button Content="프로그램 종료" Command="{Binding ExitCommand}" Style="{StaticResource ExitButtonStyle}" Height="55" Margin="0,15"/>
             </StackPanel>
         </Grid>

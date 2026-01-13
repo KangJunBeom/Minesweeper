@@ -60,7 +60,7 @@ namespace MinesweeperProject.ViewModels
             this.Nickname = nickname;
             WindowSizeToContent = SizeToContent.Manual;
             WindowWidth = 500;
-            WindowHeight = 600;
+            WindowHeight = 800;
             CurrentViewModel = new MainMenuViewModel(this);
         }
 
@@ -144,5 +144,37 @@ namespace MinesweeperProject.ViewModels
             WindowHeight = 450;
             CurrentViewModel = new SettingViewModel(this);
         }
+
+        public void ShowMultiSettingView()
+        {
+            WindowSizeToContent = SizeToContent.Manual; // 고정 크기 모드
+            WindowWidth = 500;
+            WindowHeight = 600;
+            CurrentViewModel = new MultiSettingViewModel(this);
+        }
+
+        public void ShowWaitRoomView(bool isHost, string serverIp)
+        {
+            WindowSizeToContent = SizeToContent.Manual; // 고정 크기 모드
+            WindowWidth = 500;
+            WindowHeight = 600;
+            CurrentViewModel = new WaitRoomViewModel(this, isHost, serverIp);
+        }
+
+        public void ShowServerMultiGameView(SocketServerService server)
+        {
+            // 우선 전환이 잘 되는지 확인하기 위해 메시지 박스를 띄웁니다.
+            System.Windows.MessageBox.Show($"멀티 게임을 시작합니다!");
+            WindowSizeToContent = SizeToContent.WidthAndHeight;
+            CurrentViewModel = new MultiGameViewModel(this, server);
+        }
+        public void ShowClientMultiGameView(SocketClientService client)
+        {
+            // 우선 전환이 잘 되는지 확인하기 위해 메시지 박스를 띄웁니다.
+            System.Windows.MessageBox.Show($"멀티 게임을 시작합니다!");
+            WindowSizeToContent = SizeToContent.WidthAndHeight;
+            CurrentViewModel = new MultiGameViewModel(this, client);
+        }
+
     }
 }

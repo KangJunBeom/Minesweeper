@@ -13,6 +13,8 @@ namespace MinesweeperProject.ViewModels
         public ICommand OpenSettingCommand { get; }
         public ICommand ExitCommand { get; }
         public ICommand ShowRankingCommand { get; }
+
+        public ICommand MultiSettingCommand { get; }
         public string DisplayName => $"현재 사용자: {_mainParent.Nickname ?? "Guest"}";
         public MainMenuViewModel(MainViewModel mainParent)
         {
@@ -65,6 +67,8 @@ namespace MinesweeperProject.ViewModels
             ShowRankingCommand = new RelayCommand(o => _mainParent.ShowRankingView());
 
             OpenSettingCommand = new RelayCommand(o => _mainParent.ShowSettingView());
+
+            MultiSettingCommand = new RelayCommand(o => _mainParent.ShowMultiSettingView());
         }
     }
 }
