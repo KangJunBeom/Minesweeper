@@ -74,43 +74,50 @@ MVVM 패턴을 준수하여 제작된 윈도우 지뢰찾기 아이디어를 기
 <br>
 
 #### 📂 프로젝트 구조
-MinesweeperProject<br>
-┣ 📂 Models<br>
-┃ ┣ 📜 AudioService.cs  # 음향 기능 관련 속성<br>
-┃ ┣ 📜 Cell.cs          # 지뢰 칸 속성 (IsMine, IsOpened 등)<br>
-┃ ┣ 📜 SaveData.cs      # 저장 파일 구조체<br>
-┃ ┣ 📜 RankingData.cs   # 랭킹 데이터 구조체<br>
-┃ ┗ 📜 NetworkData.cs   # 네트워크 통신 데이터 구조체<br>
-┣ 📂 View<br>
-┃ ┣ 📜 GameView.xaml         # 지뢰판 및 애니메이션 레이어<br>
-┃ ┣ 📜 LoginView.xaml        # 로그인 레이어<br>
-┃ ┣ 📜 MainMenuView.xaml     # 메인메뉴 레이어<br>
-┃ ┣ 📜 RankingView.xaml      # 명예의 전당 UI<br>
-┃ ┣ 📜 SettingView.xaml      # 환경설정 레이어<br>
-┃ ┣ 📜 MultiGameView.xaml    # 멀티 플레이 지뢰판 및 애니메이션 레이어<br>
-┃ ┣ 📜 MultiSettingView.xaml # 멀티 플레이 방 생성 및 방 참가 레이어<br>
-┃ ┗ 📜 WaitRoomView.xaml     # 멀티 플레이 대기실 레이어<br>
-┣ 📂 ViewModels<br>
-┃ ┣ 📜 GameViewModel.cs         # 지뢰 로직, 타이머, 승패 판정<br>
-┃ ┣ 📜 LoginViewModel.cs        # 사용자 로그인 처리<br>
-┃ ┣ 📜 MainMenuViewModel.cs     # 메인 메뉴 화면 전환 제어<br>
-┃ ┣ 📜 MainViewModel.cs         # 화면 전환 및 윈도우 속성 제어<br>
-┃ ┣ 📜 RankingViewModel.cs      # 랭킹 가공 및 메달 배정<br>
-┃ ┣ 📜 SettingViewModel.cs      # 음향 효과에 대한 속성 제어<br>
-┃ ┣ 📜 ViewModelBase.cs         # 특성 변화에 대한 판정<br>
-┃ ┣ 📜 MultiGameViewModel.cs    # 멀티 플레이 통신, 지뢰 로직, 승패 판정<br>
-┃ ┣ 📜 MultiSettingViewModel.cs # 멀티 플레이 서버 및 클라이언트 소켓 생성<br>
-┃ ┗ 📜 WaitRoomViewModel.cs     # 멀티 플레이 통신 소켓 커넥트 및 수신 스레드 생성<br>
-┣ 📂 Services<br>
-┃ ┣ 📜 RelayCommand.cs          # 커맨드 바인딩 공통 클래스<br>
-┃ ┣ 📜 SocketClientService.cs   # 클라이언트 소켓을 관리하는 클래스<br>
-┃ ┗ 📜 SocketServerService.cs   # 서버 소켓을 관리하는 클래스<br>
-┣ 📂 Resources<br>
-┃ ┣ 📂 BGM    # 백그라운드 음악 파일 저장 폴더<br>
-┃ ┗ 📂 SFX    # 효과음 파일 저장 폴더<br>
-┗ 📜 App.xaml              # 데이터 템플릿(View-ViewModel 매핑) 정의<br>
-(일부 생략)<br>
-<br>
+```
+MinesweeperProject
+│
+├─ Models
+│   ├─ AudioService.cs           // 음향 기능 관련 속성
+│   ├─ Cell.cs                   // 지뢰 칸 속성 (IsMine, IsOpened 등)
+│   ├─ SaveData.cs               // 저장 파일 구조체
+│   ├─ RankingData.cs            // 랭킹 데이터 구조체
+│   └─ NetworkData.cs            // 네트워크 통신 데이터 구조체
+│
+├─ View
+│   ├─ GameView.xaml            // 지뢰판 및 애니메이션 레이어
+│   ├─ LoginView.xaml           // 로그인 레이어
+│   ├─ MainMenuView.xaml        // 메인메뉴 레이어
+│   ├─ RankingView.xaml         // 명예의 전당 UI
+│   ├─ SettingView.xaml         // 환경설정 레이어
+│   ├─ MultiGameView.xaml       // 멀티 플레이 지뢰판 및 애니메이션 레이어
+│   ├─ MultiSettingView.xaml    // 멀티 플레이 방 생성 및 방 참가 레이어
+│   └─ WaitRoomView.xaml        // 멀티 플레이 대기실 레이어
+│
+├─ ViewModels
+│   ├─ GameViewModel.cs         // 지뢰 로직, 타이머, 승패 판정
+│   ├─ LoginViewModel.cs        // 사용자 로그인 처리
+│   ├─ MainMenuViewModel.cs     // 메인 메뉴 화면 전환 제어
+│   ├─ MainViewModel.cs         // 화면 전환 및 윈도우 속성 제어
+│   ├─ RankingViewModel.cs      // 랭킹 가공 및 메달 배정
+│   ├─ SettingViewModel.cs      // 음향 효과 속성 제어
+│   ├─ ViewModelBase.cs         // 특성 변화 판정
+│   ├─ MultiGameViewModel.cs    // 멀티 플레이 통신, 지뢰 로직, 승패 판정
+│   ├─ MultiSettingViewModel.cs // 멀티 플레이 서버 및 클라이언트 소켓 생성
+│   └─ WaitRoomViewModel.cs     // 멀티 플레이 통신 소켓 커넥트 및 수신 스레드 생성
+│
+├─ Services
+│   ├─ RelayCommand.cs          // 커맨드 바인딩 공통 클래스
+│   ├─ SocketClientService.cs   // 클라이언트 소켓을 관리하는 클래스
+│   └─ SocketServerService.cs   // 서버 소캣을 관리하는 클래스
+│
+├─ Resources
+│   ├─ BGM                      // 백그라운드 음악 파일 저장 폴더
+│   └─ SFX                      // 효과음 파일 저장 폴더
+│
+└─ App.xaml                    // 데이터 템플릿(View-ViewModel 매핑) 정의
+(일부 생략)
+```
 
 #### 🚀 실행 방법 (Getting Started)
 - **필수** : Visual Studio 2022 이상, .NET 6.0 이상 환경이 필요합니다.
